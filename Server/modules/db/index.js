@@ -6,7 +6,7 @@ const { Client }  = require ('pg');
 
 
 const POSTGRES_HOST = "localhost";
-const port = "2698"
+const POSTGRES_PORT = "2698"
 const POSTGRES_DB = "MMORPG";
 const POSTGRES_USER = "User";
 const POSTGRES_PASSWORD = "user123";
@@ -17,7 +17,7 @@ const client = new Client({
     database: POSTGRES_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
-    port: port
+    port: POSTGRES_PORT
 });
 
 client.connect();

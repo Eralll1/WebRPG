@@ -20,9 +20,11 @@ const RegistraterPage = () => {
         auth.register(first_name, password, user_name)
             .then(response => {
                 cookies.set("token",response.data.message.user.token)
+                navigate(`/`);
             }).catch(error => {
                 console.log(error)
             });
+        
     }
 
     return (
@@ -40,12 +42,6 @@ const RegistraterPage = () => {
 
                 <input type = "submit"/>
             </form>
-
-            <button
-              onClick={async event => {
-                navigate(`/`);
-              }}
-            >To main menu</button>
 
         </div>
     )

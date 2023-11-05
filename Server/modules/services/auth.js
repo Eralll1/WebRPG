@@ -5,30 +5,34 @@ import * as dotenv from "dotenv"
 
 dotenv.config()
 
+
+function update_token(user_name,hash_password){
+    const newToken = jwt.sign({user_name,hash_password}, process.env.KEY,{expiresIn:"7d"});
+    client.query(`UPDATE users SET token = $1 WHERE user_name = $2`,[newToken,user_name]);
+    return newToken
+
+};
+
+
+
 // try catch
 class UserService {
 
-    async update_token(user_name,hash_password){
-        const newToken = jwt.sign({user_name,hash_password}, process.env.KEY,{expiresIn:"7d"})
-        client.query(`UPDATE users SET token = $1 WHERE user_name = $2`,[newToken,user_name])
-        return newToken
-
-    };
 
     async init () {
         await client.query(`
             CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
-            token VARCHAR(255) NOT NULL,
+            token VARCHAR(512) NOT NULL,
             first_name VARCHAR(32) NOT NULL,
             user_name VARCHAR(32) NOT NULL UNIQUE,
             hash_password VARCHAR(255) NOT NULL,
-            room_id INT REFERENCES rooms(id)
             );`)
     };
 
     async register (req,res){
         const { first_name, password, user_name } = req.body;
+        
         try {
 
             const user = await client.query(`SELECT * FROM users WHERE user_name = $1`,[user_name]);
@@ -39,11 +43,9 @@ class UserService {
 
             } else {
                 // Возможны пользователи с одинаковыми токенами!
-
-
                 const hash_password = await bcrypt.hash(password,Number(process.env.SALT))
                 const token = jwt.sign({user_name,hash_password}, process.env.KEY,{expiresIn:"7d"})
-                client.query(`INSERT INTO users(first_name,hash_password,token,user_name) VALUES($1,$2,$3,$4)`,
+                await client.query(`INSERT INTO users(first_name,hash_password,token,user_name) VALUES($1,$2,$3,$4)`,
                              [first_name,hash_password,token,user_name]);
                 res.status(200).send({message:{
                                         user:{
@@ -86,7 +88,7 @@ class UserService {
             
             if(bcrypt.compare(password ,hash_password)){
 
-                const newToken = await this.update_token(user_name,hash_password)
+                const newToken = update_token(user_name,hash_password)
 
                 res.status(200).send({message:{
                     user:{
@@ -113,7 +115,7 @@ class UserService {
 
         }else if(user.rows[0].hash_password === hash_password){
             
-                const newToken = await this.update_token(user_name,hash_password)
+                const newToken = update_token(user_name,hash_password)
     
                 res.status(200).send({message:{
                     user:{

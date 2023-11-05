@@ -19,6 +19,7 @@ const LoginPage = () => {
         auth.login(user_name,password)
             .then(response => {
                 cookies.set("token",response.data.message.user.token);
+                navigate(`/`);
             }).catch(error => {
                 console.log(error)
             });
@@ -34,8 +35,6 @@ const LoginPage = () => {
                 <input type = "password" size = "10" onChange={(event) => set_password  (event.target.value)}/>
                 <input type = "submit"/>
             </form>
-
-            <button onClick={async event => {navigate(`/`);}}>To main menu</button>
         </div>
     )
 }

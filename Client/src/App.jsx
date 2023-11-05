@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import cookies from './services/cookies';
 import auth from './services/auth';
+import { login } from './store/user';
 
 
 function App() {
@@ -24,11 +25,9 @@ function App() {
             const res = await auth.valid_token(token)
             const {first_name, user_name} = res.data.message.user
             dispatch(login({first_name, user_name}));
-            return undefined
         }
         _()
     }, []);
-
 
     return (
         <Routes>

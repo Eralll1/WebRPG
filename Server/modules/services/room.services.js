@@ -9,7 +9,14 @@ class RoomService {
             id SERIAL PRIMARY KEY,
             name VARCHAR(32) NOT NULL,
             user_count INT NOT NULL DEFAULT 0,
-            owner_token VARCHAR(255) NOT NULL
+            owner_id SERIAL REFERENCES users(id)
+            );`)
+
+        client.query(`
+            CREATE TABLE IF NOT EXISTS room_members (
+            id SERIAL PRIMARY KEY,
+            room_id SERIAL REFERENCES rooms(id),
+            user_id SERIAL REFERENCES users(id)
             );`)
     };
 
@@ -36,6 +43,13 @@ class RoomService {
         }
 
     };
+
+    async connect (user_id,room_id){
+        client.query(`
+        
+        
+        `)
+    }
     
     async connect (req, res){
         
@@ -52,13 +66,11 @@ class RoomService {
 
             res.status(200).send({message:`you are at ${room_id} ${name}`})
         }
-
-        
     };
 
     async getRoomByName(req,res){
         const {name} = req.body;
-        let rooms = await client.query(`SELECT * FROM rooms where name = $1;`,[name])
+        const rooms = await client.query(`SELECT * FROM rooms where name = $1;`,[name])
         if (rooms.rows.length === 0) {
             res.status(404).send({message:"No such room"})
         }else{

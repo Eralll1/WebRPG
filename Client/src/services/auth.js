@@ -11,7 +11,12 @@ class Auth {
     async get_token() {}
 
     async valid_token(token){
-        return axios.post('http://localhost:3000/api/users/valid_token',{token})
+        return axios.post('http://localhost:3000/api/users/valid_token',{},{
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          })
     }
         
 }
