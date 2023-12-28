@@ -8,22 +8,32 @@ class AuthMiddleware{
         
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
+
+        // return error if no token
         if (token === undefined){
-            res.status(403).send({message:"not authed"})
-        
+            res.status(403).send({message:"not authed"});
 
         }else{
-            const verify =jwt.verify(token,process.env.KEY)
-            
-            
-            if (!verify){
-                res.status(403).send({message:"invalid token"})
-            }else{
-                
-                req.body.user = {user_name:verify.user_name,
-                                 hash_password:verify.hash_password}
-                next();
+
+            try {
+                const verify =jwt.verify(token,process.env.KEY)
+                if (!verify){
+                    res.status(403).send({message:"invalid token"});
+                }else{
+                    
+                    req.body.user = {user_name:verify.user_name,
+                                     hash_password:verify.hash_password};
+                    next();
+                }
+
+            } catch (error) {
+                res.status(403).send({message:"not authed"});
+                return;
             }
+            
+            
+            
+            
         }
         
         
