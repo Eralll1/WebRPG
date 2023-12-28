@@ -26,7 +26,7 @@ class UserService {
             token VARCHAR(512) NOT NULL,
             first_name VARCHAR(32) NOT NULL,
             user_name VARCHAR(32) NOT NULL UNIQUE,
-            hash_password VARCHAR(255) NOT NULL,
+            hash_password VARCHAR(255) NOT NULL
             );`)
     };
 
