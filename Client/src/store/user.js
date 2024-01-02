@@ -9,7 +9,7 @@ export const UserSlice = createSlice({
   },
 
   reducers: {
-    login(state,action){
+    login(state,action) {
         state.user.is_authed = true;
         state.user.first_name = action.payload.first_name
         state.user.user_name = action.payload.user_name

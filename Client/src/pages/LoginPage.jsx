@@ -18,11 +18,12 @@ const LoginPage = () => {
         event.preventDefault();
         auth.login(user_name,password)
             .then(response => {
-                cookies.set("token",response.data.message.user.token);
+                cookies.set("token",response.data.message.user.token, {"max-age":604800});
                 navigate(`/`);
             }).catch(error => {
                 console.log(error)
             });
+        
     }
 
 

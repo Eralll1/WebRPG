@@ -4,7 +4,6 @@ import cookies from '../services/cookies';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useDispatch} from "react-redux"
-import { login } from '../store/user';
 
 const RegistraterPage = () => {
     const navigate = useNavigate();
@@ -17,14 +16,14 @@ const RegistraterPage = () => {
 
     async function handleRegistration(event) {
         event.preventDefault();
+
         auth.register(first_name, password, user_name)
-            .then(response => {
-                cookies.set("token",response.data.message.user.token)
+            .then(response => {//                                                7 days
+                cookies.set("token",response.data.message.user.token, {"max-age":604800})
                 navigate(`/`);
             }).catch(error => {
                 console.log(error)
             });
-        
     }
 
     return (
