@@ -10,18 +10,26 @@ const RoomHubPage = () => {
     
 
     const [roomName, setRoomName] = useState("");
-    const token = useSelector(state => state.user.token);
+    const token = useSelector(state => state.user.user.token);
 
 
 
     async function handleConnect(event){
         event.preventDefault();
-        rooms.Connect(roomName,token)
+        rooms.Connect(roomName,token).then(() => navigate(`/room/${roomName}`))
+        
+        
+    };
+
+    async function handleCreation(event){
+        event.preventDefault();
+        rooms.Create(roomName,token)
+        navigate(`/room/${roomName}`).then(() => navigate(`/room/${roomName}`))
     }
 
     //REDO
     function valid(){
-        auth.validate(token).catch(e => {navigate("/")});
+        auth.valid_token(token).catch(e => {navigate("/")});
     }
 
     useEffect(valid);
@@ -33,6 +41,13 @@ const RoomHubPage = () => {
             <h3>Connect</h3>
 
             <form onSubmit={handleConnect}>
+                <input type = "name" size = "10" onChange={(event) => setRoomName(event.target.value)}/>
+                <input type = "submit"/>
+            </form>
+
+            <h3>Create Room</h3>
+
+            <form onSubmit={handleCreation}>
                 <input type = "name" size = "10" onChange={(event) => setRoomName(event.target.value)}/>
                 <input type = "submit"/>
             </form>

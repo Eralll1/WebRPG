@@ -1,6 +1,6 @@
 import './App.css';
 
-import { BrowserRouter as Route, Routes} from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
 import LandingPage from './pages/LandingPage';
@@ -24,7 +24,7 @@ function App() {
             const token = cookies.get("token")
             const res = await auth.valid_token(token)
             const {first_name, user_name} = res.data.message.user
-            dispatch(login({first_name, user_name}));
+            dispatch(login({first_name, user_name, token}));
         }
         _()
     }, []);
@@ -34,7 +34,7 @@ function App() {
             <Route path='/' Component={LandingPage} />
             <Route path='/login' Component={LoginPage} />
             <Route path='/register' Component={RegistraterPage} />
-            <Route path='/room:id' Component={RoomPage} />
+            <Route path='/room/:roomName' Component={RoomPage} />
             <Route path='/roomHub' Component={RoomHubPage} />
         </Routes>  
     )

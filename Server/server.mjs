@@ -26,7 +26,7 @@ app.use(cors())
 app.use(express.json());
 app.use("/api",router)
 
-const start = async() =>{
+const start = async() => {
 
     RoomService.init();
     UserService.init();

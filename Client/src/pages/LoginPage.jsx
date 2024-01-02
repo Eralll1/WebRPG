@@ -16,10 +16,16 @@ const LoginPage = () => {
 
     async function handleLogin(event){
         event.preventDefault();
-        auth.login(user_name,password)
-            .then(response => {
-                cookies.set("token",response.data.message.user.token, {"max-age":604800});
-                navigate(`/`);
+        auth.login(user_name, password)
+            .then(response => {   
+                const token = response.data.message.user.token  // 7 days
+                cookies.set("token", token, {"max-age":604800});
+                auth.valid_token(token)
+                    .then(res=>{
+                        const {first_name, user_name} = res.data.message.user
+                        dispatch(login({first_name, user_name, token}));
+                        navigate(`/`);
+                })
             }).catch(error => {
                 console.log(error)
             });

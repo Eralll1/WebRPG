@@ -5,7 +5,7 @@ export const UserSlice = createSlice({
   name: 'user',
 
   initialState:{
-    user: {first_name:"", user_name:"", is_authed:false}
+    user: {first_name:"", user_name:"", is_authed:false, token:""}
   },
 
   reducers: {
@@ -13,6 +13,7 @@ export const UserSlice = createSlice({
         state.user.is_authed = true;
         state.user.first_name = action.payload.first_name
         state.user.user_name = action.payload.user_name
+        state.user.token = action.payload.token
     },
     
   },

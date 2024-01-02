@@ -10,6 +10,8 @@ rooms.post("/create", RoomService.create);
 
 rooms.post("/connect", RoomService.connect);
 
-rooms.get("/getRoomByName" , RoomService.getRoomByName);
+rooms.get("/disconnect", RoomService.disconnect);
+
+rooms.get("/checkConnection", RoomService.checkConnection);
 
 rooms.post("/deleteRoomByOwner", RoomService.deleteRoomByOwner);
