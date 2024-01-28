@@ -37,14 +37,16 @@ class UserService {
 
             const user = await client.query(`SELECT * FROM users WHERE user_name = $1`,[user_name]);
 
-            if(user.rows[0]){
+            if(user.rowCount >= 1){
 
-                res.status(403).send({message:"User already exist"});
+                res.status(403).send({message:"User already exist", trash:"6tasd"});
 
             } else {
                 // Возможны пользователи с одинаковыми токенами!
                 const hash_password = await bcrypt.hash(password,Number(process.env.SALT))
+
                 const token = jwt.sign({user_name,hash_password}, process.env.KEY,{expiresIn:"7d"})
+
                 await client.query(`INSERT INTO users(first_name,hash_password,token,user_name) VALUES($1,$2,$3,$4)`,
                              [first_name,hash_password,token,user_name]);
                 res.status(200).send({message:{

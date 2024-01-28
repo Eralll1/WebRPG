@@ -4,7 +4,8 @@ dotenv.config({path:"d:\\Projects\\Uncomplited\\WebRPG\\Server\\.env"});
 
 import express from 'express';
 import cors from "cors";
-
+import { createServer } from 'node:http';
+import { Server } from "socket.io";
 
 import router from "./modules/routes/index.js";
 
@@ -21,16 +22,31 @@ import GameDataService from './modules/services/gameData.services.js';
 const PORT = process.env.PORT
 const HOST = process.env.HOST
 
+
 const app = express();
 app.use(cors())
 app.use(express.json());
 app.use("/api",router)
 
-const start = async() => {
+const server = createServer(app)
+const io = new Server(server);
 
-    RoomService.init();
-    UserService.init();
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
+
+
+
+
+
+const start = async() => {
+    
     GameDataService.init_const();
+
+    UserService.init();
+    RoomService.init();
+    
+    
     
 
     app.listen(PORT, () => {

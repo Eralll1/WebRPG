@@ -11,8 +11,11 @@ function headers(token){
 class Rooms {
 
     async Connect(roomName,token){
-        return axios.post('http://localhost:3000/api/rooms/connect', {roomName},headers(token) )
+        return axios.post('http://localhost:3000/api/rooms/connect', {roomName}, headers(token))
     };
+    async Disconnect(token){
+        return axios.post('http://localhost:3000/api/rooms/disconnect', {}, headers(token))
+    }
 
     async Create(roomName,token){
         return axios.post('http://localhost:3000/api/rooms/create', {roomName}, headers(token) )
@@ -27,7 +30,11 @@ class Rooms {
     };
 
     async CheckConnection(token){
-        return axios.get('http://localhost:3000/api/rooms/checkConnections',{} ,headers(token))
+        return axios.post('http://localhost:3000/api/rooms/checkConnection', {}, headers(token))
+    };
+
+    async GetRoomByOwner(token){
+        return axios.post('http://localhost:3000/api/rooms/getRoomByOwner',{} ,headers(token))
     }
 }
 

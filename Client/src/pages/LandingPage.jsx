@@ -6,7 +6,7 @@ import cookies from '../services/cookies';
 const LandingPage = () => {
     const navigate = useNavigate();
 
-    const { is_authed } = useSelector(state => state.user.user)
+    const { is_authed } = useSelector(state => state.user)
 
     
     return (
@@ -22,7 +22,10 @@ const LandingPage = () => {
 
 
 
-            {is_authed && <button onClick = {async e => {cookies.set("token",undefined)}}>
+            {is_authed && <button onClick = {async e => {
+                                                        cookies.set("token",undefined);
+                                                        window.location.reload();
+                                                        }}>
                 Unlogin
             </button>}
 

@@ -6,24 +6,23 @@ import { useSelector } from 'react-redux';
 
 const RoomPage = () => {
     const navigate = useNavigate();
-    const [room_id, set_room_id] = useState("")
-    const token = useSelector(state => state.user.user.token);
+    const token = useSelector(state => state.user.token);
 
     useEffect(() => {
-        const _ = async () =>{
-            let url = window.location.href.split()
-            set_room_id(url[url.length - 1])
-            rooms.CheckConnection(token)
-                .then(res => {
-                    const connection = res.room_id
-                    if (connection !== room_id){
-                        throw new Error("")
-                }})
-                .catch(res => {
-                    navigate("/roomHub")
-                })
-        }
-        _()
+        (async () =>{
+            let url = window.location.href.split("/")
+            let room_name;
+            try {
+                room_name = (await rooms.CheckConnection(token)).data.room.name
+            } catch (error) {
+                navigate(`/roomHub`);
+            }
+            
+            if (room_name != url[url.length - 1]){
+                navigate(`/roomHub`);
+            }
+
+        })()
     }, []);
 
 
@@ -34,6 +33,12 @@ const RoomPage = () => {
                 navigate(`/`);
               }}
             >To main menu</button>
+            <button
+                onClick={async event=>{
+                    rooms.Disconnect(token)
+                    navigate(`/`)
+                }}
+            >Leave</button>
         </>
     )
 

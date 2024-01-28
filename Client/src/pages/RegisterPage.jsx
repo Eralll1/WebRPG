@@ -4,6 +4,7 @@ import cookies from '../services/cookies';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useDispatch} from "react-redux"
+import { login } from '../store/user';
 
 const RegistraterPage = () => {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ const RegistraterPage = () => {
     const [user_name,  set_user_name ] = useState("");
     const [password,   set_password  ] = useState("");
     const [first_name, set_first_name] = useState("");
+    const dispatch = useDispatch();
 
 
     async function handleRegistration(event) {
@@ -23,7 +25,7 @@ const RegistraterPage = () => {
                 auth.valid_token(token)
                     .then(res=>{
                         const {first_name, user_name} = res.data.message.user
-                        dispatch(login({first_name, user_name, token}));
+                        dispatch(login({first_name, user_name, token, owned_room:""}));
                         navigate(`/`);
                 })
             }).catch(error => {

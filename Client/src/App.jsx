@@ -13,20 +13,45 @@ import { useDispatch } from 'react-redux';
 import cookies from './services/cookies';
 import auth from './services/auth';
 import { login } from './store/user';
-
+import rooms from './services/rooms';
 
 function App() {
 
     const dispatch = useDispatch()
 
     useEffect(() => {
+        /*
         const _ = async () =>{
             const token = cookies.get("token")
             const res = await auth.valid_token(token)
             const {first_name, user_name} = res.data.message.user
-            dispatch(login({first_name, user_name, token}));
+            let owned_room = ""
+            try {
+                owned_room = rooms.GetRoomByOwner(token).data.room.name
+            } catch (error){
+                console.log(error);
+            }
+            dispatch(login({first_name, user_name, token, owned_room}));
+
         }
-        _()
+        _()*/
+        (async () =>{
+            const token = cookies.get("token")
+            const res = await auth.valid_token(token)
+            const {first_name, user_name} = res.data.message.user
+            let owned_room = ""
+            try {
+                owned_room = (await rooms.GetRoomByOwner(token)).data.room.name
+            } catch (error){
+                console.log(error);
+            }
+            dispatch(login({first_name, user_name, token, owned_room}));
+
+        })()
+
+
+
+
     }, []);
 
     return (
