@@ -1,17 +1,13 @@
-class cookies{
-    get(name) {
-        var matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-    set(name, value, params = {}){
-        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-        // encodeURIComponent(key) - не знаю на сколько это работает
-        for (const [key, value_] of Object.entries(params)) {
-            updatedCookie += ";" + encodeURIComponent(key) + "=" + encodeURIComponent(value_)
-          }
-        document.cookie = updatedCookie;
-    }
-}
+import Cookies from 'js-cookie';
 
-export default new cookies
+export const setCookie = (name,value) => {
+        Cookies.set(name,value,{expires:7})
+};
+
+export const getCookie = (name) => {
+        return Cookies.get(name);
+};
+
+export const deleteCookie = (name) => {
+    Cookies.remove(name);
+};

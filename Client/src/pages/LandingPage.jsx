@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import cookies from '../services/cookies';
+import { deleteCookie } from '../services/cookies';
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const LandingPage = () => {
 
 
             {is_authed && <button onClick = {async e => {
-                                                        cookies.set("token",undefined);
+                                                        deleteCookie("token");
                                                         window.location.reload();
                                                         }}>
                 Unlogin

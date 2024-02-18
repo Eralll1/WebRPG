@@ -1,6 +1,5 @@
 import React from 'react'
 import auth from '../services/auth';
-import cookies from '../services/cookies';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useDispatch} from "react-redux"
@@ -21,7 +20,10 @@ const RegistraterPage = () => {
         auth.register(first_name, password, user_name)
             .then(response => {   
                 const token = response.data.message.user.token  // 7 days
-                cookies.set("token", token, {"max-age":604800});
+
+                deleteCookie("token")
+                setCookie("token", token); 
+
                 auth.valid_token(token)
                     .then(res=>{
                         const {first_name, user_name} = res.data.message.user

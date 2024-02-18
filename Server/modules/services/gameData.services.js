@@ -116,10 +116,8 @@ class GameDataService{
     async admin_remove(adminKey,tableName, id){
         if (adminKey !== ADMINKEY){
             return "wrong key!"
-        } else{
-
-            return await client.query(`DELETE FROM $1 WHERE id = $2;`,[tableName,id])
         }
+        return await client.query(`DELETE FROM $1 WHERE id = $2;`,[tableName,id])
     };
 
 }

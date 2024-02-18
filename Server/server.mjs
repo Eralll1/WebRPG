@@ -16,8 +16,6 @@ import GameDataService from './modules/services/gameData.services.js';
 
 
 
-
-
 // to .env
 const PORT = process.env.PORT
 const HOST = process.env.HOST
@@ -28,32 +26,33 @@ app.use(cors())
 app.use(express.json());
 app.use("/api",router)
 
-const server = createServer(app)
-const io = new Server(server);
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
+const server = createServer(app)
+const io = new Server(server, { cors: { origin: '*' } });
+
+
+
+io.on("connection", (socket) => {
+    console.log("New client connected");
+    socket.on("disconnect", () => {
+        console.log("Client disconnected");
+    });
 });
 
+io.listen(4000);
 
 
 
-
-const start = async() => {
+async function start(){
     
+    // запуск базы данных
     GameDataService.init_const();
-
     UserService.init();
     RoomService.init();
     
-    
-    
-
     app.listen(PORT, () => {
-        console.log(`Server started on port ${PORT}`);
         console.log(`Join at http://${HOST}:${PORT}`);
     });
 };
-
 
 start();

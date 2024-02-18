@@ -35,6 +35,10 @@ class Rooms {
 
     async GetRoomByOwner(token){
         return axios.post('http://localhost:3000/api/rooms/getRoomByOwner',{} ,headers(token))
+    };
+
+    async GetUsersInRoom(token,roomName){
+        return axios.post('http://localhost:3000/api/rooms/getUsersInRoom',{roomName},headers(token))
     }
 }
 

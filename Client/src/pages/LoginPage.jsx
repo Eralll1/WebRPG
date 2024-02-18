@@ -1,6 +1,6 @@
 import React from 'react'
 import auth from '../services/auth';
-import cookies from '../services/cookies';
+import { deleteCookie, setCookie } from '../services/cookies';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,10 @@ const LoginPage = () => {
             console.log(e);
         }
         const token = login_data.data.message.user.token  
-        cookies.set("token", token, {"max-age":604800,"path":"/"}); // 7 days
+
+        deleteCookie("token")
+        setCookie("token", token); 
+        
         navigate(`/`);
         window.location.reload();
         

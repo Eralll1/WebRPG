@@ -16,4 +16,6 @@ rooms.post("/checkConnection", RoomService.checkConnection);
 
 rooms.post("/deleteRoomByOwner", RoomService.deleteRoomByOwner);
 
-rooms.post("/getRoomByOwner", RoomService.getRoomByOwner)
+rooms.post("/getRoomByOwner", RoomService.getRoomByOwner);
+
+rooms.post("/getUsersInRoom", RoomService.getUsersInRoom);

@@ -4,9 +4,6 @@ import { users } from "./users/users.js";
 
 const router = express.Router();
 
-router.get("/test",(req,res) => {res.send(req.headers)});
-
-
 router.use("/rooms",rooms)
 router.use("/users",users)
 
