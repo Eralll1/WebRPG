@@ -94,7 +94,7 @@ class RoomService {
         client.query(`UPDATE rooms SET user_count = $1 WHERE id = $2`,[room.rows[0].user_count + 1, room.rows[0].id])
         client.query("COMMIT")
 
-        res.status(200).send({roomName})
+        res.status(200).send({room_name})
     };
 
     async disconnect(req, res){
@@ -111,6 +111,10 @@ class RoomService {
         const user_id = user.rows[0].id
 
         const connection = await client.query(`SELECT * FROM room_members WHERE user_id = $1`, [user_id])
+        if (connection.rowCount !== 1){
+            res.status(400).send("user is not connected");
+            return
+        }
 
         const room = await client.query(`SELECT * FROM rooms WHERE id = $1`,[connection.rows[0].room_id]);
 
@@ -190,9 +194,15 @@ class RoomService {
             res.status(400).send("incorrect data");
             return
         }
-        const room = (await client.query(`SELECT * FROM rooms WHERE name = $1`,[room_name])).rows[0]
+        const rooms = (await client.query(`SELECT * FROM rooms WHERE name = $1`,[room_name]))
+        if (rooms.rowCount === 0){
+            res.status(404).send({message: "no room found", room_name});
+            return
+        }
         // проверка наличия комнаты
-        const users = (await client.query(`SELECT * FROM room_members WHERE room_id = $1`, [room.id])).rows 
+        const users = (await client.query(`SELECT users.user_name FROM room_members INNER JOIN users ON (room_members.room_id = $1 AND users.id = room_members.user_id)`, [rooms.rows[0].id])).rows
+        console.log(users);
+
 
         res.status(200).send(users)
     }

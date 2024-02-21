@@ -9,7 +9,7 @@ function headers(token){
       }
 }
 class Rooms {
-
+    // SOCKET
     async Connect(roomName,token){
         return axios.post('http://localhost:3000/api/rooms/connect', {roomName}, headers(token))
     };

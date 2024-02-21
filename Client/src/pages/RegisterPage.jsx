@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useDispatch} from "react-redux"
 import { login } from '../store/user';
+import { setCookie, deleteCookie } from '../services/cookies';
 
 const RegistraterPage = () => {
     const navigate = useNavigate();
